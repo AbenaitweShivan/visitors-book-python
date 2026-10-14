@@ -1,0 +1,50 @@
+<div class="overflow-x-auto bg-white rounded-lg shadow">
+  <table class="min-w-full text-sm">
+    <thead class="bg-gray-50 text-left">
+      <tr>
+        {% if show_date %}<th class="px-4 py-3">Date</th>{% endif %}
+        <th class="px-4 py-3">Name</th>
+        <th class="px-4 py-3">Phone</th>
+        <th class="px-4 py-3">Organisation</th>
+        <th class="px-4 py-3">Visiting</th>
+        <th class="px-4 py-3">Purpose</th>
+        <th class="px-4 py-3">Time in</th>
+        <th class="px-4 py-3">Time out</th>
+        <th class="px-4 py-3">Action</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y">
+      {% for v in visits %}
+      <tr>
+        {% if show_date %}<td class="px-4 py-3 whitespace-nowrap">{{ v.time_in.strftime('%d %b %Y') }}</td>{% endif %}
+        <td class="px-4 py-3 font-medium">{{ v.full_name }}</td>
+        <td class="px-4 py-3">{{ v.phone }}</td>
+        <td class="px-4 py-3">{{ v.organisation or '-' }}</td>
+        <td class="px-4 py-3">{{ v.host_name }}</td>
+        <td class="px-4 py-3">{{ v.purpose }}</td>
+        <td class="px-4 py-3">{{ v.time_in.strftime('%H:%M') }}</td>
+        <td class="px-4 py-3">
+          {% if v.time_out is none %}
+          <span class="rounded-full bg-green-100 text-green-800 text-xs px-2 py-1">Inside</span>
+          {% else %}
+          {{ v.time_out.strftime('%H:%M') }}
+          {% endif %}
+        </td>
+        <td class="px-4 py-3">
+          {% if v.time_out is none %}
+          <form method="post" action="{{ url_for('checkout') }}" onsubmit="return confirm('Check out this visitor?')">
+            <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+            <input type="hidden" name="id" value="{{ v.id }}">
+            <button class="text-sm bg-gray-800 text-white rounded px-3 py-1">Check out</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="9" class="px-4 py-8 text-center text-gray-500">{{ empty_message }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

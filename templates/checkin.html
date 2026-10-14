@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Check in visitor{% endblock %}
+{% block content %}
+<div class="max-w-xl bg-white rounded-lg shadow p-6">
+  <h1 class="text-xl font-semibold mb-4">Check in visitor</h1>
+  <form method="post" class="space-y-4" novalidate>
+    <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+
+    <div>
+      <label class="block text-sm font-medium mb-1" for="full_name">Full name *</label>
+      <input id="full_name" name="full_name" value="{{ old.full_name }}"
+             class="w-full border rounded px-3 py-2 {{ 'border-red-500' if errors.full_name }}">
+      {% if errors.full_name %}
+      <p class="text-red-600 text-sm mt-1">{{ errors.full_name }}</p>
+      {% endif %}
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium mb-1" for="phone">Phone number *</label>
+      <input id="phone" name="phone" value="{{ old.phone }}"
+             class="w-full border rounded px-3 py-2 {{ 'border-red-500' if errors.phone }}">
+      {% if errors.phone %}
+      <p class="text-red-600 text-sm mt-1">{{ errors.phone }}</p>
+      {% endif %}
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium mb-1" for="organisation">Organisation</label>
+      <input id="organisation" name="organisation" value="{{ old.organisation }}"
+             class="w-full border rounded px-3 py-2">
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium mb-1" for="host_name">Person visiting *</label>
+      <input id="host_name" name="host_name" value="{{ old.host_name }}"
+             class="w-full border rounded px-3 py-2 {{ 'border-red-500' if errors.host_name }}">
+      {% if errors.host_name %}
+      <p class="text-red-600 text-sm mt-1">{{ errors.host_name }}</p>
+      {% endif %}
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium mb-1" for="purpose">Purpose of visit *</label>
+      <input id="purpose" name="purpose" value="{{ old.purpose }}"
+             class="w-full border rounded px-3 py-2 {{ 'border-red-500' if errors.purpose }}">
+      {% if errors.purpose %}
+      <p class="text-red-600 text-sm mt-1">{{ errors.purpose }}</p>
+      {% endif %}
+    </div>
+
+    <button class="bg-blue-900 text-white rounded px-4 py-2 hover:bg-blue-800">Check in</button>
+  </form>
+</div>
+{% endblock %}

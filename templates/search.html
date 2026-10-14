@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Search visits{% endblock %}
+{% block content %}
+<h1 class="text-xl font-semibold mb-4">Search past visits</h1>
+
+<form method="get" class="bg-white rounded-lg shadow p-4 mb-4 grid gap-4 sm:grid-cols-4 sm:items-end">
+  <div class="sm:col-span-2">
+    <label class="block text-sm font-medium mb-1" for="q">Name or phone</label>
+    <input id="q" name="q" value="{{ q }}" class="w-full border rounded px-3 py-2">
+  </div>
+  <div>
+    <label class="block text-sm font-medium mb-1" for="from">From</label>
+    <input id="from" name="from" type="date" value="{{ date_from }}" class="w-full border rounded px-3 py-2">
+  </div>
+  <div>
+    <label class="block text-sm font-medium mb-1" for="to">To</label>
+    <input id="to" name="to" type="date" value="{{ date_to }}" class="w-full border rounded px-3 py-2">
+  </div>
+  <div class="sm:col-span-4">
+    <button class="bg-blue-900 text-white rounded px-4 py-2 hover:bg-blue-800">Search</button>
+    <a href="{{ url_for('search') }}" class="ml-3 text-sm text-gray-600 hover:underline">Clear</a>
+  </div>
+</form>
+
+{% for e in errors %}
+<p class="mb-3 text-red-700 bg-red-100 rounded px-3 py-2">{{ e }}</p>
+{% endfor %}
+
+{% if results %}
+<p class="text-sm text-gray-600 mb-2">{{ results|length }} visit{{ '' if results|length == 1 else 's' }} found</p>
+{% endif %}
+
+{% with visits=results, show_date=true, empty_message="No visits match your search." %}
+  {% include "_visits_table.html" %}
+{% endwith %}
+{% endblock %}
